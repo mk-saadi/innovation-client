@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
-// import "./auth.css";
+import "./auth.css";
 import axios from "axios";
-import { Eye, EyeOff, ImagePlus } from "lucide-react";
+import { Eye, EyeOff, ImagePlus, User } from "lucide-react";
 import imageCompression from "browser-image-compression";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Fade } from "react-awesome-reveal";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useToast from "../../hooks/useToast";
 import { AuthContext } from "../../AuthProvider";
 import Toast from "../../hooks/Toast";
@@ -34,15 +34,11 @@ const Register = () => {
 		const name = form.name.value;
 		const email = form.email.value;
 		const password = form.password.value;
-		const confirmPassword = form.confirm.value;
 
 		if (!image) {
 			return showToast("error", "Pleases upload an image");
 		}
 
-		if (password !== confirmPassword) {
-			return showToast("error", "Passwords do not match!");
-		}
 		if (password.length < 8) {
 			return showToast(
 				"error",
@@ -51,8 +47,8 @@ const Register = () => {
 		}
 
 		const options = {
-			maxSizeMB: 0.05,
-			maxWidthOrHeight: 400,
+			maxSizeMB: 0.06,
+			maxWidthOrHeight: 800,
 			useWebWorker: true,
 		};
 		const compressedImage = await imageCompression(image, options);
@@ -218,7 +214,7 @@ const Register = () => {
 	};
 
 	return (
-		<>
+		<div className="flex items-center justify-center w-full max-h-screen p-10 bg-gradient-to-r from-amber-500 to-amber-600">
 			{toastType && (
 				<Toast
 					type={toastType}
@@ -226,23 +222,27 @@ const Register = () => {
 					onHide={hideToast}
 				/>
 			)}
-			<Fade
-				cascade
-				direction="up"
-				triggerOnce
-			>
-				<div className="relative">
+			<div className="w-full">
+				<div className="relative w-1/2 pt-8 mx-auto shadow-2xl rounded-xl bg-amber-50 drop-shadow-md">
 					<form
 						onSubmit={handleSignUp}
-						className="flex flex-col w-full gap-y-1.5 drop-shadow-sm"
+						className="flex flex-col w-full  gap-y-1.5 drop-shadow-sm"
 					>
 						<Fade
 							cascade
 							direction="up"
 							damping={0.1}
+							className="flex flex-col items-center justify-center w-full"
 						>
+							<div className="flex flex-row items-center justify-center w-full text-gray-700 font-semibold text-xl mb-5 gap-x-1.5">
+								<span>
+									<User />
+								</span>
+								<h1 className="">Register</h1>
+							</div>
+
 							<div
-								className="bg-[#42486a]"
+								className="bg-[#cacaca88] w-4/5"
 								style={{
 									borderLeft:
 										activeInput === "name"
@@ -256,7 +256,7 @@ const Register = () => {
 								id="parag"
 								tabIndex={1}
 							>
-								<p className="text-sm font-medium text-gray-400">
+								<p className="text-sm font-medium text-gray-500">
 									Your Name
 								</p>
 								<input
@@ -268,7 +268,7 @@ const Register = () => {
 							</div>
 
 							<div
-								className="bg-[#42486a]"
+								className="bg-[#cacaca88] w-4/5"
 								style={{
 									borderLeft:
 										activeInput === "image"
@@ -282,7 +282,7 @@ const Register = () => {
 								id="parag"
 								tabIndex={1}
 							>
-								<p className="text-sm font-medium text-gray-400">
+								<p className="text-sm font-medium text-gray-500">
 									Your Photo
 								</p>
 
@@ -309,7 +309,7 @@ const Register = () => {
 								) : (
 									<label
 										htmlFor="inputFormPic"
-										className="flex items-center justify-start text-gray-300 cursor-pointer gap-x-2"
+										className="flex items-center justify-start text-gray-700 cursor-pointer gap-x-2"
 									>
 										<ImagePlus /> Upload photo
 									</label>
@@ -325,7 +325,7 @@ const Register = () => {
 							</div>
 
 							<div
-								className="bg-[#42486a]"
+								className="bg-[#cacaca88] w-4/5"
 								style={{
 									borderLeft:
 										activeInput === "email"
@@ -339,7 +339,7 @@ const Register = () => {
 								id="parag"
 								tabIndex={1}
 							>
-								<p className="text-sm font-medium text-gray-400">
+								<p className="text-sm font-medium text-gray-500">
 									Your Email
 								</p>
 								<input
@@ -351,7 +351,7 @@ const Register = () => {
 							</div>
 
 							<div
-								className="bg-[#42486a]"
+								className="bg-[#cacaca88] w-4/5"
 								style={{
 									borderLeft:
 										activeInput === "password"
@@ -365,7 +365,7 @@ const Register = () => {
 								id="parag"
 								tabIndex={1}
 							>
-								<p className="text-sm font-medium text-gray-400">
+								<p className="text-sm font-medium text-gray-500">
 									Password
 								</p>
 								<div className="flex">
@@ -382,61 +382,40 @@ const Register = () => {
 									<button
 										type="button"
 										onClick={handleTogglePassword}
-										className="text-gray-300 outline-none"
+										className="text-gray-700 outline-none"
 									>
 										{showPassword ? <EyeOff /> : <Eye />}
 									</button>
 								</div>
 							</div>
 
-							<div
-								className="bg-[#42486a]"
-								style={{
-									borderLeft:
-										activeInput === "confirm"
-											? "3px solid #fab07a"
-											: "",
-									paddingLeft:
-										activeInput === "confirm" ? "7px" : "",
-								}}
-								onFocus={handleFocus}
-								onBlur={handleBlur}
-								id="parag"
-								tabIndex={1}
-							>
-								<p className="text-sm font-medium text-gray-400">
-									Confirm Password
-								</p>
-								<div className="flex">
-									<input
-										type={
-											showPassword ? "text" : "password"
-										}
-										id="inputForm"
-										name="confirm"
-										autoComplete="off"
-										required
-									/>
-									<button
-										type="button"
-										onClick={handleTogglePassword}
-										className="text-gray-300 outline-none"
-									>
-										{showPassword ? <EyeOff /> : <Eye />}
-									</button>
-								</div>
-							</div>
+							<input
+								type="submit"
+								value="Register"
+								className="w-1/2 submitButton"
+							/>
 						</Fade>
-
-						<input
-							type="submit"
-							value="Submit"
-							className="submitButton w-fit"
-						/>
 					</form>
+
+					<Fade
+						className="flex items-center justify-center pb-5"
+						damping={1}
+					>
+						<div className="flex items-center justify-center gap-x-2">
+							<p className="font-medium text-gray-500">
+								Already a member?
+							</p>
+							<Link
+								className="font-semibold duration-150 text-amber-700 hover:underline hover:text-amber-600"
+								to="/login"
+							>
+								Login
+							</Link>
+						</div>
+					</Fade>
 				</div>
-			</Fade>
-		</>
+			</div>
+		</div>
 	);
 };
 

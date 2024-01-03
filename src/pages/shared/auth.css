@@ -1,0 +1,95 @@
+#inputForm {
+	background-color: transparent;
+	outline: none;
+	padding-top: 5px;
+	caret-color: #fab07a;
+	color: #414040;
+	width: 100%;
+	font-size: larger;
+}
+
+#inputFormMo {
+	background-color: transparent;
+	outline: none;
+	padding-top: 5px;
+	color: #4d4d4d;
+	width: 100%;
+	font-size: larger;
+	caret-color: #fab07a;
+}
+
+#inputForm:-webkit-autofill,
+#inputForm:-webkit-autofill:hover,
+#inputForm:-webkit-autofill:focus,
+#inputForm:-webkit-autofill:active {
+	transition: background-color 5000s ease-in-out 0s,
+		color 5000s ease-in-out 0s;
+}
+
+#inputFormMo:-webkit-autofill,
+#inputFormMo:-webkit-autofill:hover,
+#inputFormMo:-webkit-autofill:focus,
+#inputFormMo:-webkit-autofill:active {
+	transition: background-color 5000s ease-in-out 0s,
+		color 5000s ease-in-out 0s;
+}
+
+#parag {
+	padding: 5px 10px;
+	border-radius: 0.5rem;
+}
+
+.authPage a.active {
+	color: #fab07a;
+	border-bottom: 2px solid #fab07a;
+	padding-bottom: 2px;
+	transition: 0.3s ease;
+}
+
+.submitButton {
+	background-color: #f59e0b;
+	box-shadow: 0px 0px 7px 2.5px #b4774b;
+	color: white;
+	padding-left: 2rem;
+	padding-right: 2rem;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	margin-top: 1rem;
+	margin-bottom: 2rem;
+	transition-duration: 200ms;
+	border-radius: 0;
+	outline: none;
+	cursor: pointer;
+	border-radius: 0.5rem;
+	font-weight: 600;
+}
+
+@media screen and (max-width: 480px) {
+	.submitButton {
+		/* background-color: #fab07a; */
+		/* background-color: #112a25; */
+		background-color: #f59e0b;
+		box-shadow: 0px 0px 7px 2.5px #b4774b;
+		color: white;
+		padding: 0.5rem 1rem;
+		margin-top: 1rem;
+		margin-bottom: 2rem;
+		transition-duration: 200ms;
+		border-radius: 0.5rem;
+		outline: none;
+		cursor: pointer;
+		/* width: fit-content; */
+		font-weight: 600;
+		font-size: small;
+	}
+}
+
+.submitButton:active {
+	background-color: #f09a06;
+	transform: scale(0.97);
+	box-shadow: 0px 0px 5px 2px #a06841;
+}
+
+.authShadow {
+	box-shadow: 0px 0px 15px 8px rgba(17, 17, 32, 0.418);
+}
