@@ -2,14 +2,32 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import AuthProvider from "./AuthProvider";
+import AuthProvider from "./provider/AuthProvider";
 import Register from "./pages/shared/Register";
 import Login from "./pages/shared/Login";
+import Main from "./layout/Main";
+import PrivateRoute from "./route/PrivateRoute";
+import Home from "./pages/home/Home";
+import ProductDetail from "./pages/home/hComponent/ProductDetail";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <div>Hello world!</div>,
+		element: (
+			<PrivateRoute>
+				<Main />
+			</PrivateRoute>
+		),
+		children: [
+			{
+				path: "/",
+				element: <Home />,
+			},
+			{
+				path: "/product/:id",
+				element: <ProductDetail />,
+			},
+		],
 	},
 	{
 		path: "/register",
@@ -25,7 +43,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
 		<AuthProvider>
 			<div className="flex flex-col h-screen">
-				<div className="flex w-full min-h-screen border border-black flex-sol">
+				<div className="flex w-full min-h-screen flex-sol">
 					<RouterProvider router={router} />
 				</div>
 			</div>

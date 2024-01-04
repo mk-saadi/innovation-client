@@ -11,7 +11,7 @@ import {
 } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
-import app from "./firebase/firebase.config";
+import app from "../firebase/firebase.config";
 
 const auth = getAuth(app);
 
@@ -58,15 +58,18 @@ const AuthProvider = ({ children }) => {
 			setUser(currentUser);
 			if (currentUser) {
 				axios
-					.post("http://localhost:2000/jwt", {
+					.post("http://localhost:9100/jwt", {
 						email: currentUser.email,
 					})
 					.then((data) => {
-						localStorage.setItem("access-token", data.data.token);
+						localStorage.setItem(
+							"access-token-innovation",
+							data.data.token
+						);
 						setLoading(false);
 					});
 			} else {
-				localStorage.removeItem("access-token");
+				localStorage.removeItem("access-token-innovation");
 			}
 		});
 

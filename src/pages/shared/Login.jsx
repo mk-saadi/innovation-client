@@ -5,7 +5,7 @@ import { Eye, EyeOff, UserPlus } from "lucide-react";
 import { Fade } from "react-awesome-reveal";
 import { Link, useNavigate } from "react-router-dom";
 import useToast from "../../hooks/useToast";
-import { AuthContext } from "../../AuthProvider";
+import { AuthContext } from "../../provider/AuthProvider";
 import Toast from "../../hooks/Toast";
 
 const Login = () => {
@@ -68,7 +68,7 @@ const Login = () => {
 
 	return (
 		<>
-			<div className="flex items-center justify-center w-full max-h-screen p-10 bg-gradient-to-r from-amber-500 to-amber-600">
+			<div className="flex items-center justify-center w-full max-h-screen px-2 md:px-28 lg:p-10 bg-gradient-to-r from-amber-500 to-amber-600">
 				{toastType && (
 					<Toast
 						type={toastType}
@@ -77,7 +77,7 @@ const Login = () => {
 					/>
 				)}
 				<div className="w-full">
-					<div className="relative w-1/2 pt-8 mx-auto shadow-2xl rounded-xl bg-amber-50 drop-shadow-md">
+					<div className="relative w-full pt-8 mx-auto shadow-2xl lg:w-1/2 rounded-xl bg-amber-50 drop-shadow-md">
 						<form
 							onSubmit={handleLogin}
 							className="flex flex-col w-full  gap-y-1.5 drop-shadow-sm"
@@ -172,7 +172,7 @@ const Login = () => {
 
 								<input
 									type="submit"
-									value="Register"
+									value="Login"
 									className="w-1/2 submitButton"
 								/>
 							</Fade>

@@ -7,7 +7,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Fade } from "react-awesome-reveal";
 import { Link, useNavigate } from "react-router-dom";
 import useToast from "../../hooks/useToast";
-import { AuthContext } from "../../AuthProvider";
+import { AuthContext } from "../../provider/AuthProvider";
 import Toast from "../../hooks/Toast";
 import { storage } from "../../firebase/firebase.config";
 
@@ -57,144 +57,88 @@ const Register = () => {
 			image.type
 		);
 
-		try {
-			const res = await signUp(email, password);
-			if (res.user) {
-				const storageRef = ref(storage, email);
-				const uploadTask = uploadBytesResumable(storageRef, blob);
+		const sform = {
+			blob,
+			name,
+			email,
+			password,
+		};
+		console.log("sform: ", sform); // getting all the  value
 
-				uploadTask.on(
-					"state_changed",
-					(snapshot) => {
-						console.log(
-							"Upload is " +
-								(snapshot.bytesTransferred /
-									snapshot.totalBytes) *
-									100 +
-								"% done"
-						);
-					},
-					(error) => {
-						console.log(error.message);
-					},
-					() => {
-						getDownloadURL(uploadTask.snapshot.ref).then(
-							(downloadURL) => {
-								const userDocument = {
-									photo: downloadURL,
-									name: name,
-									email: email,
-								};
-								updateProfileInfo(name, downloadURL);
+		signUp(email, password)
+			.then((res) => {
+				if (res.user) {
+					const storageRef = ref(storage, email);
+					const uploadTask = uploadBytesResumable(storageRef, blob);
 
-								axios
-									.post(
-										"http://localhost:2000/users",
-										userDocument
-									)
-									.then((response) => {
-										if (
-											response.data.acknowledged === true
-										) {
-											showToast(
-												"success",
-												"Registration successful!"
-											);
+					uploadTask.on(
+						"state_changed",
+						(snapshot) => {
+							console.log(
+								"Upload is " +
+									(snapshot.bytesTransferred /
+										snapshot.totalBytes) *
+										100 +
+									"% done"
+							);
+						},
+						(error) => {
+							console.log(error.message);
+						},
+						() => {
+							getDownloadURL(uploadTask.snapshot.ref).then(
+								(downloadURL) => {
+									const userDocument = {
+										photo: downloadURL,
+										name: name,
+										email: email,
+									};
+									updateProfileInfo(name, downloadURL);
 
-											form.reset();
-											setTimeout(() => {
+									axios
+										.post(
+											"http://localhost:9100/users",
+											userDocument
+										)
+										.then((response) => {
+											if (
+												response.data.acknowledged ===
+												true
+											) {
 												showToast(
-													"loading",
-													"Redirecting"
+													"success",
+													"Registration successful!"
 												);
+												form.reset();
+
 												setTimeout(() => {
-													navigate("/");
-												}, 500);
-											}, 1000);
-										}
-									})
-									.catch((error) => {
-										showToast(
-											"error",
-											"Couldn't store data to database!"
-										);
-									});
-							}
-						);
-					}
-				);
-			} else {
-				showToast("error", "Error registering user!");
-			}
-		} catch (error) {
-			showToast("error", "Error registering user!");
-		}
-
-		// signUp(email, password)
-		// 	.then((res) => {
-		// 		if (res.user) {
-		// 			const storageRef = ref(storage, email);
-		// 			const uploadTask = uploadBytesResumable(storageRef, blob);
-
-		// 			uploadTask.on(
-		// 				"state_changed",
-		// 				(snapshot) => {
-		// 					console.log(
-		// 						"Upload is " +
-		// 							(snapshot.bytesTransferred /
-		// 								snapshot.totalBytes) *
-		// 								100 +
-		// 							"% done"
-		// 					);
-		// 				},
-		// 				(error) => {
-		// 					console.log(error.message);
-		// 				},
-		// 				() => {
-		// 					getDownloadURL(uploadTask.snapshot.ref).then(
-		// 						(downloadURL) => {
-		// 							const userDocument = {
-		// 								photo: downloadURL,
-		// 								name: name,
-		// 								email: email,
-		// 							};
-		// 							updateProfileInfo(name, downloadURL);
-
-		// 							axios
-		// 								.post(
-		// 									"http://localhost:2000/users",
-		// 									userDocument
-		// 								)
-		// 								.then((response) => {
-		// 									if (
-		// 										response.data.acknowledged ===
-		// 										true
-		// 									) {
-		// 										showToast(
-		// 											"success",
-		// 											"Registration successful!"
-		// 										);
-
-		// 										form.reset();
-		// 									}
-		// 								})
-		// 								.catch((error) => {
-		// 									showToast(
-		// 										"error",
-		// 										"Couldn't store data to database!"
-		// 									);
-		// 								});
-		// 						}
-		// 					);
-		// 				}
-		// 			);
-		// 		} else {
-		// 			showToast("error", "Error singing in user!");
-		// 		}
-		// 	})
-		// 	.catch((error) => {
-		// 		showToast("error", "Error singing in user!");
-		// 	});
+													showToast(
+														"loading",
+														"Redirecting"
+													);
+													setTimeout(() => {
+														navigate("/");
+													}, 500);
+												}, 1000);
+											}
+										})
+										.catch((error) => {
+											showToast(
+												"error",
+												"Couldn't store data to database!"
+											);
+										});
+								}
+							);
+						}
+					);
+				} else {
+					showToast("error", "Error singing up user!");
+				}
+			})
+			.catch((error) => {
+				showToast("error", "Error Registering user!");
+			});
 	};
 
 	const [selectedFile, setSelectedFile] = useState(null);
@@ -214,7 +158,7 @@ const Register = () => {
 	};
 
 	return (
-		<div className="flex items-center justify-center w-full max-h-screen p-10 bg-gradient-to-r from-amber-500 to-amber-600">
+		<div className="flex items-center justify-center w-full max-h-screen px-2 md:px-28 lg:p-10 bg-gradient-to-r from-amber-500 to-amber-600">
 			{toastType && (
 				<Toast
 					type={toastType}
@@ -223,7 +167,7 @@ const Register = () => {
 				/>
 			)}
 			<div className="w-full">
-				<div className="relative w-1/2 pt-8 mx-auto shadow-2xl rounded-xl bg-amber-50 drop-shadow-md">
+				<div className="relative w-full pt-8 mx-auto shadow-2xl lg:w-1/2 rounded-xl bg-amber-50 drop-shadow-md">
 					<form
 						onSubmit={handleSignUp}
 						className="flex flex-col w-full  gap-y-1.5 drop-shadow-sm"
@@ -289,7 +233,7 @@ const Register = () => {
 								{selectedFile ? (
 									<label
 										htmlFor="inputFormPic"
-										className="flex gap-2 text-gray-300 cursor-pointer"
+										className="flex gap-2 text-gray-700 cursor-pointer"
 									>
 										{imagePreview && (
 											<img
