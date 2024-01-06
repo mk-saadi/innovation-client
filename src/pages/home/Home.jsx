@@ -1,10 +1,11 @@
+import useScrollToTop from "../../hooks/useScrollToTop";
 import Products from "./hComponent/Products";
 
 const Home = () => {
-	return (
-		<div>
-			<p className="text-4xl text-gray-700">home</p>
+	useScrollToTop();
 
+	return (
+		<div className="min-h-screen">
 			<Products />
 		</div>
 	);

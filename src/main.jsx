@@ -9,6 +9,7 @@ import Main from "./layout/Main";
 import PrivateRoute from "./route/PrivateRoute";
 import Home from "./pages/home/Home";
 import ProductDetail from "./pages/home/hComponent/ProductDetail";
+import CategoryProducts from "./pages/category/CategoryProduct";
 
 const router = createBrowserRouter([
 	{
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
 				path: "/product/:id",
 				element: <ProductDetail />,
 			},
+			{
+				path: "/:category",
+				element: <CategoryProducts />,
+			},
 		],
 	},
 	{
@@ -42,8 +47,8 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
 		<AuthProvider>
-			<div className="flex flex-col h-screen">
-				<div className="flex w-full min-h-screen flex-sol">
+			<div className="flex flex-col h-screen bg-white">
+				<div className="flex w-full min-h-screen bg-white flex-sol">
 					<RouterProvider router={router} />
 				</div>
 			</div>

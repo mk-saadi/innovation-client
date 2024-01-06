@@ -15,9 +15,7 @@ const ProductSwiper = ({ product }) => {
 				}}
 				modules={[Pagination]}
 				className="w-full mySwiper h-fit"
-				slidesPerView={2}
-				spaceBetween={10}
-				centeredSlides={true}
+				rewind={true}
 			>
 				{images &&
 					images.map((image, index) => (
@@ -26,7 +24,7 @@ const ProductSwiper = ({ product }) => {
 							className="w-auto h-min active:cursor-grabbing cursor-grab"
 						>
 							<img
-								className="md:h-[350px] lg:h-[420px] xl:h-[440px] h-[300px]"
+								className="md:h-[320px] lg:h-[420px] xl:h-[440px] max-h-[300px] w-fit"
 								src={image}
 								alt={`Product Image ${index + 1}`}
 							/>

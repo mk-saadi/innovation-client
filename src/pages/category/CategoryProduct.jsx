@@ -1,36 +1,43 @@
-import axios from "axios";
-import { StarHalf, StarIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import { Link, useParams } from "react-router-dom";
 import { Fade } from "react-awesome-reveal";
-import { Link } from "react-router-dom";
+import { StarHalf, StarIcon } from "lucide-react";
 
-const Products = () => {
-	const [products, setProducts] = useState([]);
+const CategoryProducts = () => {
+	const [similarProducts, setSimilarProducts] = useState([]);
+	const { category } = useParams();
 
 	useEffect(() => {
-		const fetchData = async () => {
+		const fetchSimilarProducts = async () => {
 			try {
-				const res = await axios.get("https://dummyjson.com/products");
-				if (res.data) {
-					setProducts(res.data.products);
+				const response = await axios.get(
+					`https://dummyjson.com/products/category/${category}`
+				);
+
+				if (response.status === 200) {
+					setSimilarProducts(response.data.products);
 				}
 			} catch (error) {
-				console.log(error);
+				console.error("Error fetching similar products:", error);
 			}
 		};
 
-		fetchData();
-	}, []);
+		fetchSimilarProducts();
+	}, [category]);
 
 	return (
 		<div>
 			{" "}
 			<div className="bg-white">
 				<div className="max-w-2xl px-4 py-16 mx-auto sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-					<h2 className="sr-only">Products</h2>
+					<h2 className="sr-only">{category}</h2>
 
+					<h2 className="text-xl font-medium text-gray-700">
+						Showing all products from {category}
+					</h2>
 					<div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-						{products.map((product) => (
+						{similarProducts.map((product) => (
 							<Fade
 								key={product?.id}
 								triggerOnce
@@ -116,4 +123,4 @@ const RatingStars = ({ rating }) => {
 	return <div className="flex items-center">{renderStars()}</div>;
 };
 
-export default Products;
+export default CategoryProducts;

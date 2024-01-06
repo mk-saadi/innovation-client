@@ -2,6 +2,7 @@ import { Fragment, useContext } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { AlignJustify, X, ShoppingBag } from "lucide-react";
 import { AuthContext } from "../../provider/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const navigation = [
 	{ name: "Dashboard", href: "#", current: true },
@@ -21,7 +22,14 @@ function classNames(...classes) {
 }
 
 const Navbar = () => {
-	const { user } = useContext(AuthContext);
+	const { user, logOut } = useContext(AuthContext);
+	const navigate = useNavigate();
+
+	const handleLogOut = () => {
+		logOut();
+		localStorage.removeItem("access-token-innovation");
+		navigate("/login");
+	};
 
 	return (
 		<>
@@ -100,7 +108,7 @@ const Navbar = () => {
 													leaveTo="transform opacity-0 scale-95"
 												>
 													<Menu.Items className="absolute right-0 z-10 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-														{userNavigation.map(
+														{/* {userNavigation.map(
 															(item) => (
 																<Menu.Item
 																	key={
@@ -128,7 +136,29 @@ const Navbar = () => {
 																	)}
 																</Menu.Item>
 															)
-														)}
+														)} */}
+
+														<Menu.Item>
+															<button className="block px-4 py-2 text-sm text-gray-700">
+																Profile
+															</button>
+														</Menu.Item>
+
+														<Menu.Item>
+															<button className="block px-4 py-2 text-sm text-gray-700">
+																Settings
+															</button>
+														</Menu.Item>
+
+														<Menu.Item
+															onClick={
+																handleLogOut
+															}
+														>
+															<button className="block px-4 py-2 text-sm text-gray-700">
+																Sign out
+															</button>
+														</Menu.Item>
 													</Menu.Items>
 												</Transition>
 											</Menu>
