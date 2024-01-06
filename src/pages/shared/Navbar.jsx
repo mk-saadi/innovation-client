@@ -2,7 +2,7 @@ import { Fragment, useContext } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { AlignJustify, X, ShoppingBag } from "lucide-react";
 import { AuthContext } from "../../provider/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const navigation = [
 	{ name: "Dashboard", href: "#", current: true },
@@ -43,13 +43,14 @@ const Navbar = () => {
 							<div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
 								<div className="flex items-center justify-between h-16">
 									<div className="flex items-center">
-										<div className="flex-shrink-0">
-											<img
-												className="w-8 h-8"
-												src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-												alt="Your Company"
-											/>
-										</div>
+										<Link
+											to="/"
+											className="flex-shrink-0"
+										>
+											<h1 className="font-bold text-amber-500 ">
+												INNO
+											</h1>
+										</Link>
 										<div className="hidden md:block">
 											<div className="flex items-baseline ml-10 space-x-4">
 												{navigation.map((item) => (

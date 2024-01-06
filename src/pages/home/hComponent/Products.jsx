@@ -1,16 +1,37 @@
 import axios from "axios";
-import { StarHalf, StarIcon } from "lucide-react";
+import { ArrowUpDown, StarHalf, StarIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Fade } from "react-awesome-reveal";
 import { Link } from "react-router-dom";
 
 const Products = () => {
+	// const [products, setProducts] = useState([]);
+
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		try {
+	// 			const res = await axios.get("https://dummyjson.com/products");
+	// 			if (res.data) {
+	// 				setProducts(res.data.products);
+	// 			}
+	// 		} catch (error) {
+	// 			console.log(error);
+	// 		}
+	// 	};
+
+	// 	fetchData();
+	// }, []);
+
 	const [products, setProducts] = useState([]);
+	const [searchTerm, setSearchTerm] = useState("");
+	const [sortOrder, setSortOrder] = useState(1);
 
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const res = await axios.get("https://dummyjson.com/products");
+				const res = await axios.get(
+					`https://dummyjson.com/products/search?q=${searchTerm}`
+				);
 				if (res.data) {
 					setProducts(res.data.products);
 				}
@@ -20,7 +41,19 @@ const Products = () => {
 		};
 
 		fetchData();
-	}, []);
+	}, [searchTerm]);
+
+	const handleSearchChange = (event) => {
+		setSearchTerm(event.target.value);
+	};
+
+	const sortProductsByPrice = () => {
+		const sortedProducts = [...products].sort(
+			(a, b) => (a.price - b.price) * sortOrder
+		);
+		setProducts(sortedProducts);
+		setSortOrder(sortOrder * -1); // toggle between 1 and -1
+	};
 
 	return (
 		<div>
@@ -28,6 +61,25 @@ const Products = () => {
 			<div className="bg-white">
 				<div className="max-w-2xl px-4 py-16 mx-auto sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
 					<h2 className="sr-only">Products</h2>
+
+					<div className="flex flex-row items-center justify-start mb-6 gap-x-8">
+						<input
+							type="text"
+							value={searchTerm}
+							onChange={handleSearchChange}
+							placeholder="Search products..."
+							className=""
+							id="inputForm"
+						/>
+
+						<button
+							onClick={sortProductsByPrice}
+							className="flex font-semibold duration-150 group gap-x-2 text-amber-700 hover:underline hover:text-amber-600 whitespace-nowrap"
+						>
+							<ArrowUpDown className="duration-200 group-active:rotate-180" />{" "}
+							Sort by Price
+						</button>
+					</div>
 
 					<div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
 						{products.map((product) => (
@@ -46,7 +98,7 @@ const Products = () => {
 											<img
 												src={product?.thumbnail}
 												alt={product?.title}
-												className="object-cover w-full duration-300 xl:h-48 lg:h-44 group-hover:scale-105 rounded-t-xl"
+												className="object-cover w-full duration-300 md:h-36 xl:h-48 lg:h-44 group-hover:scale-105 rounded-t-xl"
 											/>
 										</div>
 									</div>

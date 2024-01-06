@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import "./auth.css";
 import axios from "axios";
-import { Eye, EyeOff, UserPlus } from "lucide-react";
+import { Eye, EyeOff, User } from "lucide-react";
 import { Fade } from "react-awesome-reveal";
 import { Link, useNavigate } from "react-router-dom";
 import useToast from "../../hooks/useToast";
@@ -90,7 +90,7 @@ const Login = () => {
 							>
 								<div className="flex flex-row items-center justify-center w-full text-gray-700 font-semibold text-xl mb-5 gap-x-1.5">
 									<span>
-										<UserPlus />
+										<User />
 									</span>
 									<h1 className="">Login</h1>
 								</div>

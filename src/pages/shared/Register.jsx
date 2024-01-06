@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import "./auth.css";
 import axios from "axios";
-import { Eye, EyeOff, ImagePlus, User } from "lucide-react";
+import { Eye, EyeOff, ImagePlus, UserPlus } from "lucide-react";
 import imageCompression from "browser-image-compression";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Fade } from "react-awesome-reveal";
@@ -180,7 +180,7 @@ const Register = () => {
 						>
 							<div className="flex flex-row items-center justify-center w-full text-gray-700 font-semibold text-xl mb-5 gap-x-1.5">
 								<span>
-									<User />
+									<UserPlus />
 								</span>
 								<h1 className="">Register</h1>
 							</div>
