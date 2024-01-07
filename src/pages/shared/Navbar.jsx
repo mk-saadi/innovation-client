@@ -3,6 +3,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { AlignJustify, X, ShoppingBag } from "lucide-react";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
+import Cart from "../category/Cart";
 
 const navigation = [
 	{ name: "Dashboard", href: "#", current: true },
@@ -164,23 +165,15 @@ const Navbar = () => {
 												</Transition>
 											</Menu>
 
-											<button
-												type="button"
-												className="relative p-1 text-gray-400 bg-gray-800 rounded-full hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-											>
-												<span className="absolute -inset-1.5" />
-												<span className="sr-only">
-													open cart
-												</span>
-												<ShoppingBag
-													className="w-6 h-6"
-													aria-hidden="true"
-												/>
-											</button>
+											{/* cart item */}
+											<div>
+												<Cart />
+											</div>
 										</div>
 									</div>
-									<div className="flex -mr-2 md:hidden">
-										{/* Mobile menu button */}
+
+									{/* Mobile menu button */}
+									<div className="flex -mr-2 md:hidden justify-start items-center gap-x-2.5">
 										<Disclosure.Button className="relative inline-flex items-center justify-center p-2 text-gray-400 bg-gray-800 rounded-md hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
 											<span className="absolute -inset-0.5" />
 											<span className="sr-only">
@@ -198,6 +191,11 @@ const Navbar = () => {
 												/>
 											)}
 										</Disclosure.Button>
+
+										{/* cart button */}
+										<div>
+											<Cart />
+										</div>
 									</div>
 								</div>
 							</div>

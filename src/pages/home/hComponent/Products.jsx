@@ -3,28 +3,17 @@ import { ArrowUpDown, StarHalf, StarIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Fade } from "react-awesome-reveal";
 import { Link } from "react-router-dom";
+import useScrollToTop from "../../../hooks/useScrollToTop";
+import "../../shared/auth.css";
 
 const Products = () => {
-	// const [products, setProducts] = useState([]);
-
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		try {
-	// 			const res = await axios.get("https://dummyjson.com/products");
-	// 			if (res.data) {
-	// 				setProducts(res.data.products);
-	// 			}
-	// 		} catch (error) {
-	// 			console.log(error);
-	// 		}
-	// 	};
-
-	// 	fetchData();
-	// }, []);
-
 	const [products, setProducts] = useState([]);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [sortOrder, setSortOrder] = useState(1);
+	const [currentPage, setCurrentPage] = useState(1);
+	const productsPerPage = 12;
+
+	// useScrollToTop();
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -34,6 +23,7 @@ const Products = () => {
 				);
 				if (res.data) {
 					setProducts(res.data.products);
+					setCurrentPage(1);
 				}
 			} catch (error) {
 				console.log(error);
@@ -52,7 +42,19 @@ const Products = () => {
 			(a, b) => (a.price - b.price) * sortOrder
 		);
 		setProducts(sortedProducts);
-		setSortOrder(sortOrder * -1); // toggle between 1 and -1
+		setSortOrder(sortOrder * -1);
+	};
+
+	const indexOfLastProduct = currentPage * productsPerPage;
+	const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+	const currentProducts = products.slice(
+		indexOfFirstProduct,
+		indexOfLastProduct
+	);
+
+	const paginate = (pageNumber) => {
+		setCurrentPage(pageNumber);
+		window.scrollTo({ top: 0, behavior: "smooth" });
 	};
 
 	return (
@@ -62,38 +64,39 @@ const Products = () => {
 				<div className="max-w-2xl px-4 py-16 mx-auto sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
 					<h2 className="sr-only">Products</h2>
 
-					<div className="flex flex-row items-center justify-start mb-6 gap-x-8">
+					<div className="flex flex-row items-center w-full mb-6 gap-x-8">
 						<input
 							type="text"
 							value={searchTerm}
 							onChange={handleSearchChange}
 							placeholder="Search products..."
-							className=""
+							className="pb-1 pl-3 border shadow-sm border-amber-900/30 rounded-xl"
 							id="inputForm"
 						/>
 
-						<button
-							onClick={sortProductsByPrice}
-							className="flex font-semibold duration-150 group gap-x-2 text-amber-700 hover:underline hover:text-amber-600 whitespace-nowrap"
-						>
-							<ArrowUpDown className="duration-200 group-active:rotate-180" />{" "}
-							Sort by Price
-						</button>
+						<div className="">
+							<button
+								onClick={sortProductsByPrice}
+								className="flex w-full font-semibold duration-150 group gap-x-2 text-amber-500 hover:underline hover:text-amber-600 whitespace-nowrap"
+							>
+								<ArrowUpDown /> Sort by Price
+							</button>
+						</div>
 					</div>
 
 					<div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-						{products.map((product) => (
+						{currentProducts.map((product) => (
 							<Fade
 								key={product?.id}
 								triggerOnce
 								damping={0.5}
-								className="duration-100 bg-gray-200 hover:bg-gray-100 hover:shadow-md rounded-xl"
+								className="duration-100 bg-gray-200 border shadow-sm hover:bg-gray-100 rounded-xl hover:border-amber-900/20"
 							>
 								<Link
 									to={`/product/${product?.id}`}
 									className="relative group rounded-xl "
 								>
-									<div className="">
+									<div className="overflow-hidden">
 										<div className="">
 											<img
 												src={product?.thumbnail}
@@ -129,6 +132,29 @@ const Products = () => {
 								</Link>
 							</Fade>
 						))}
+					</div>
+					{/* Pagination controls */}
+					<div className="flex items-center justify-center w-full mt-12">
+						{Array.from(
+							{
+								length: Math.ceil(
+									products.length / productsPerPage
+								),
+							},
+							(_, index) => (
+								<button
+									key={index}
+									onClick={() => paginate(index + 1)}
+									className={`duration-200 font-semibold rounded-md text-lg ${
+										currentPage === index + 1
+											? "bg-amber-500 text-white shadow-md px-4"
+											: "px-4 text-gray-700 hover:underline"
+									}`}
+								>
+									{index + 1}
+								</button>
+							)
+						)}
 					</div>
 				</div>
 			</div>

@@ -10,6 +10,7 @@ import PrivateRoute from "./route/PrivateRoute";
 import Home from "./pages/home/Home";
 import ProductDetail from "./pages/home/hComponent/ProductDetail";
 import CategoryProducts from "./pages/category/CategoryProduct";
+import { CartProvider } from "./provider/CartProvider";
 
 const router = createBrowserRouter([
 	{
@@ -47,11 +48,13 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
 		<AuthProvider>
-			<div className="flex flex-col h-screen bg-white">
-				<div className="flex w-full min-h-screen bg-white flex-sol">
-					<RouterProvider router={router} />
+			<CartProvider>
+				<div className="flex flex-col h-screen bg-white">
+					<div className="flex w-full min-h-screen bg-white flex-sol">
+						<RouterProvider router={router} />
+					</div>
 				</div>
-			</div>
+			</CartProvider>
 		</AuthProvider>
 	</React.StrictMode>
 );
