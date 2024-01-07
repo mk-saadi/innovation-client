@@ -1,22 +1,11 @@
 import { Fragment, useContext } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { AlignJustify, X, ShoppingBag } from "lucide-react";
+import { AlignJustify, X } from "lucide-react";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 import Cart from "../category/Cart";
 
-const navigation = [
-	{ name: "Dashboard", href: "#", current: true },
-	{ name: "Team", href: "#", current: false },
-	{ name: "Projects", href: "#", current: false },
-	{ name: "Calendar", href: "#", current: false },
-	{ name: "Reports", href: "#", current: false },
-];
-const userNavigation = [
-	{ name: "Your Profile", href: "#" },
-	{ name: "Settings", href: "#" },
-	{ name: "Sign out", href: "#" },
-];
+const navigation = [{ name: "Home", to: "/", current: true }];
 
 function classNames(...classes) {
 	return classes.filter(Boolean).join(" ");
@@ -55,9 +44,9 @@ const Navbar = () => {
 										<div className="hidden md:block">
 											<div className="flex items-baseline ml-10 space-x-4">
 												{navigation.map((item) => (
-													<a
+													<Link
 														key={item.name}
-														href={item.href}
+														to={item.to}
 														className={classNames(
 															item.current
 																? "bg-gray-900 text-white"
@@ -71,11 +60,12 @@ const Navbar = () => {
 														}
 													>
 														{item.name}
-													</a>
+													</Link>
 												))}
 											</div>
 										</div>
 									</div>
+
 									<div className="hidden md:block">
 										<div className="flex items-center ml-4 md:ml-6">
 											{/* Profile dropdown */}
@@ -110,36 +100,6 @@ const Navbar = () => {
 													leaveTo="transform opacity-0 scale-95"
 												>
 													<Menu.Items className="absolute right-0 z-10 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-														{/* {userNavigation.map(
-															(item) => (
-																<Menu.Item
-																	key={
-																		item.name
-																	}
-																>
-																	{({
-																		active,
-																	}) => (
-																		<a
-																			href={
-																				item.href
-																			}
-																			className={classNames(
-																				active
-																					? "bg-gray-100"
-																					: "",
-																				"block px-4 py-2 text-sm text-gray-700"
-																			)}
-																		>
-																			{
-																				item.name
-																			}
-																		</a>
-																	)}
-																</Menu.Item>
-															)
-														)} */}
-
 														<Menu.Item>
 															<button className="block px-4 py-2 text-sm text-gray-700">
 																Profile
@@ -201,28 +161,6 @@ const Navbar = () => {
 							</div>
 
 							<Disclosure.Panel className="md:hidden">
-								<div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-									{navigation.map((item) => (
-										<Disclosure.Button
-											key={item.name}
-											as="a"
-											href={item.href}
-											className={classNames(
-												item.current
-													? "bg-gray-900 text-white"
-													: "text-gray-300 hover:bg-gray-700 hover:text-white",
-												"block rounded-md px-3 py-2 text-base font-medium"
-											)}
-											aria-current={
-												item.current
-													? "page"
-													: undefined
-											}
-										>
-											{item.name}
-										</Disclosure.Button>
-									))}
-								</div>
 								<div className="pt-4 pb-3 border-t border-gray-700">
 									<div className="flex items-center px-5">
 										<div className="flex-shrink-0">
@@ -246,31 +184,22 @@ const Navbar = () => {
 												</div>
 											)}
 										</div>
-										<button
-											type="button"
-											className="relative flex-shrink-0 p-1 ml-auto text-gray-400 bg-gray-800 rounded-full hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-										>
-											<span className="absolute -inset-1.5" />
-											<span className="sr-only">
-												View notifications
-											</span>
-											<ShoppingBag
-												className="w-6 h-6"
-												aria-hidden="true"
-											/>
-										</button>
 									</div>
+
+									{/* mobile menu item(dropdown) */}
 									<div className="px-2 mt-3 space-y-1">
-										{userNavigation.map((item) => (
-											<Disclosure.Button
-												key={item.name}
-												as="a"
-												href={item.href}
-												className="block px-3 py-2 text-base font-medium text-gray-400 rounded-md hover:bg-gray-700 hover:text-white"
-											>
-												{item.name}
-											</Disclosure.Button>
-										))}
+										<Disclosure.Button className="block px-3 py-2 text-base font-medium text-gray-400 rounded-md hover:bg-gray-700 hover:text-white">
+											Profile
+										</Disclosure.Button>
+										<Disclosure.Button className="block px-3 py-2 text-base font-medium text-gray-400 rounded-md hover:bg-gray-700 hover:text-white">
+											Settings
+										</Disclosure.Button>
+										<Disclosure.Button
+											onClick={handleLogOut}
+											className="block px-3 py-2 text-base font-medium text-gray-400 rounded-md hover:bg-gray-700 hover:text-white"
+										>
+											Sign out
+										</Disclosure.Button>
 									</div>
 								</div>
 							</Disclosure.Panel>

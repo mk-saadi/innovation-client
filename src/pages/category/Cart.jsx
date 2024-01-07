@@ -3,11 +3,19 @@ import { Dialog, Transition } from "@headlessui/react";
 import { X } from "lucide-react";
 import { ShoppingBag } from "lucide-react";
 import { useCart } from "../../provider/CartProvider";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
 	const [open, setOpen] = useState(false);
 
 	const { cartItems } = useCart();
+	console.log("cartItems: ", cartItems);
+
+	const cartPrice = cartItems.map((ca) => ca.productPrice);
+
+	const totalCartPrice = cartPrice.reduce((accumulator, price) => {
+		return accumulator + price;
+	}, 0);
 
 	return (
 		<>
@@ -24,9 +32,7 @@ const Cart = () => {
 						aria-hidden="true"
 					/>
 
-					<span className="ml-2 text-sm font-medium text-[#fab07a]">
-						{cartItems.length}
-					</span>
+					<span className="ml-2 text-sm font-medium text-[#fab07a]">{cartItems.length}</span>
 				</button>
 			</div>
 
@@ -77,14 +83,10 @@ const Cart = () => {
 												<button
 													type="button"
 													className="relative rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
-													onClick={() =>
-														setOpen(false)
-													}
+													onClick={() => setOpen(false)}
 												>
 													<span className="absolute -inset-2.5" />
-													<span className="sr-only">
-														Close panel
-													</span>
+													<span className="sr-only">Close panel</span>
 													<X
 														className="h-6 w-6"
 														aria-hidden="true"
@@ -92,7 +94,7 @@ const Cart = () => {
 												</button>
 											</div>
 										</Transition.Child>
-										<div className="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+										<div className="flex h-full flex-col overflow-y-scroll  overflow-x-hidden bg-white py-6 shadow-xl">
 											<div className="px-4 sm:px-6">
 												<Dialog.Title className="text-base font-semibold leading-6 text-gray-900">
 													Panel title
@@ -100,8 +102,61 @@ const Cart = () => {
 											</div>
 											<div className="relative mt-6 flex-1 px-4 sm:px-6">
 												{/* Your content */}
-												<div className="mx-2 bg-white overflow-y-auto overflow-x-hidden">
-													content here
+												<div className="h-full mx-2 bg-white overflow-y-auto overflow-x-hidden">
+													<div>
+														<p>${totalCartPrice.toFixed(2)}</p>
+														<button>Checkout</button>
+													</div>
+													{cartItems.map((ca) => (
+														<div
+															key={ca.id}
+															className="flex mb-2.5 flex-col py-2 border-b border-amber-900/30"
+														>
+															<div className="flex gap-x-1.5">
+																<div>
+																	<img
+																		src={ca.productImage}
+																		alt=""
+																		className="h-20 w-32 object-cover rounded-md"
+																	/>
+																</div>
+																<div className="flex flex-col flex-1 ml-4">
+																	<div>
+																		<div className="flex justify-between text-base font-medium text-gray-900">
+																			<h3>
+																				<Link
+																					to={`/product/${ca?.productId}`}
+																					className="hover:underline"
+																					onClick={() =>
+																						setOpen(false)
+																					}
+																				>
+																					{ca.productName}
+																				</Link>
+																			</h3>
+																			<p className="ml-4">
+																				${ca.productPrice.toFixed(2)}
+																			</p>
+																		</div>
+																	</div>
+																	<div className="flex items-end justify-between flex-1 text-sm">
+																		<p className="text-gray-500">
+																			Qty {ca.quantity}
+																		</p>
+
+																		<div className="flex">
+																			<button
+																				type="button"
+																				className="font-medium  text-red-500/70 hover:text-red-500 hover:underline"
+																			>
+																				Remove
+																			</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													))}
 												</div>
 												<div className="absolute bottom-0 w-full -mb-2 flex justify-center mt-6 text-sm text-center text-gray-500">
 													<p>
@@ -109,15 +164,10 @@ const Cart = () => {
 														<button
 															type="button"
 															className="ml-2 font-medium text-orange-500 hover:text-orange-400"
-															onClick={() =>
-																setOpen(false)
-															}
+															onClick={() => setOpen(false)}
 														>
 															Continue Shopping
-															<span aria-hidden="true">
-																{" "}
-																&rarr;
-															</span>
+															<span aria-hidden="true"> &rarr;</span>
 														</button>
 													</p>
 												</div>

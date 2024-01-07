@@ -11,9 +11,7 @@ const CategoryProducts = () => {
 	useEffect(() => {
 		const fetchSimilarProducts = async () => {
 			try {
-				const response = await axios.get(
-					`https://dummyjson.com/products/category/${category}`
-				);
+				const response = await axios.get(`https://dummyjson.com/products/category/${category}`);
 
 				if (response.status === 200) {
 					setSimilarProducts(response.data.products);
@@ -30,11 +28,11 @@ const CategoryProducts = () => {
 		<div>
 			{" "}
 			<div className="bg-white">
-				<div className="max-w-2xl px-4 py-16 mx-auto sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+				<div className="max-w-2xl px-4 py-12 mx-auto sm:px-6 sm:py-16 lg:max-w-7xl lg:px-8">
 					<h2 className="sr-only">{category}</h2>
 
-					<h2 className="text-xl font-medium text-gray-700">
-						Showing all products from {category}
+					<h2 className="text-lg font-semibold text-gray-700 mb-2">
+						Showing all products from {category} category
 					</h2>
 					<div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
 						{similarProducts.map((product) => (
@@ -53,7 +51,7 @@ const CategoryProducts = () => {
 											<img
 												src={product?.thumbnail}
 												alt={product?.title}
-												className="object-cover w-full duration-300 xl:h-48 lg:h-44 group-hover:scale-105 rounded-t-xl"
+												className="object-cover w-full duration-300 h-40 md:h-36 xl:h-48 lg:h-44 group-hover:scale-105 rounded-t-xl"
 											/>
 										</div>
 									</div>
@@ -62,24 +60,18 @@ const CategoryProducts = () => {
 											{product?.title}
 										</h3>
 										<div className="flex items-center justify-start rating-stars text-amber-500">
-											<RatingStars
-												rating={product.rating}
-											/>
+											<RatingStars rating={product.rating} />
 										</div>
 
-										<div className="flex mt-1 text-lg font-medium text-gray-700">
-											<p className="">
-												Price: ${product?.price}
-											</p>
-											<span className="mx-2"> - </span>
-											<p className="text-gray-500">
-												{product?.stock} in stock
-											</p>
+										<div className="flex lg:flex-row flex-col mt-1 text-lg font-medium text-gray-700">
+											<p className="">Price: ${product?.price}</p>
+											<span className="mx-2 hidden lg:block"> - </span>
+											<p className="text-gray-500">{product?.stock} in stock</p>
 										</div>
 									</div>
 
-									<div className="absolute px-4 py-2 font-medium text-white bg-red-500 rounded-full shadow-xl top-3 -right-3 drop-shadow-md">
-										<p>{product.discountPercentage}% OFF</p>
+									<div className="absolute px-4 py-2 md:text-sm text-xs  font-medium text-white bg-red-500 rounded-full shadow-xl top-3 -right-3 drop-shadow-md">
+										<p>-{product.discountPercentage}% OFF</p>
 									</div>
 								</Link>
 							</Fade>

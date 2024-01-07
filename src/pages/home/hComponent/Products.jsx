@@ -18,9 +18,7 @@ const Products = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const res = await axios.get(
-					`https://dummyjson.com/products/search?q=${searchTerm}`
-				);
+				const res = await axios.get(`https://dummyjson.com/products/search?q=${searchTerm}`);
 				if (res.data) {
 					setProducts(res.data.products);
 					setCurrentPage(1);
@@ -38,19 +36,14 @@ const Products = () => {
 	};
 
 	const sortProductsByPrice = () => {
-		const sortedProducts = [...products].sort(
-			(a, b) => (a.price - b.price) * sortOrder
-		);
+		const sortedProducts = [...products].sort((a, b) => (a.price - b.price) * sortOrder);
 		setProducts(sortedProducts);
 		setSortOrder(sortOrder * -1);
 	};
 
 	const indexOfLastProduct = currentPage * productsPerPage;
 	const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-	const currentProducts = products.slice(
-		indexOfFirstProduct,
-		indexOfLastProduct
-	);
+	const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
 
 	const paginate = (pageNumber) => {
 		setCurrentPage(pageNumber);
@@ -101,7 +94,7 @@ const Products = () => {
 											<img
 												src={product?.thumbnail}
 												alt={product?.title}
-												className="object-cover w-full duration-300 md:h-36 xl:h-48 lg:h-44 group-hover:scale-105 rounded-t-xl"
+												className="h-40 object-cover w-full duration-300 md:h-36 xl:h-48 lg:h-44 group-hover:scale-105 rounded-t-xl"
 											/>
 										</div>
 									</div>
@@ -110,24 +103,18 @@ const Products = () => {
 											{product?.title}
 										</h3>
 										<div className="flex items-center justify-start rating-stars text-amber-500">
-											<RatingStars
-												rating={product.rating}
-											/>
+											<RatingStars rating={product.rating} />
 										</div>
 
-										<div className="flex mt-1 text-lg font-medium text-gray-700">
-											<p className="">
-												Price: ${product?.price}
-											</p>
-											<span className="mx-2"> - </span>
-											<p className="text-gray-500">
-												{product?.stock} in stock
-											</p>
+										<div className="flex lg:flex-row flex-col mt-1 text-lg font-medium text-gray-700">
+											<p className="">Price: ${product?.price}</p>
+											<span className="mx-2 hidden lg:block"> - </span>
+											<p className="text-gray-500">{product?.stock} in stock</p>
 										</div>
 									</div>
 
-									<div className="absolute px-4 py-2 font-medium text-white bg-red-500 rounded-full shadow-xl top-3 -right-3 drop-shadow-md">
-										<p>{product.discountPercentage}% OFF</p>
+									<div className="absolute lg:px-4 py-1 px-2 lg:py-2 font-medium  text-white bg-red-500 md:text-sm text-xs rounded-full shadow-xl top-3 -right-3 drop-shadow-md ">
+										<p>-{product.discountPercentage}% OFF</p>
 									</div>
 								</Link>
 							</Fade>
@@ -137,9 +124,7 @@ const Products = () => {
 					<div className="flex items-center justify-center w-full mt-12">
 						{Array.from(
 							{
-								length: Math.ceil(
-									products.length / productsPerPage
-								),
+								length: Math.ceil(products.length / productsPerPage),
 							},
 							(_, index) => (
 								<button
