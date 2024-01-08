@@ -12,10 +12,11 @@ const Cart = () => {
 	console.log("cartItems: ", cartItems);
 
 	const cartPrice = cartItems.map((ca) => ca.productPrice);
-
 	const totalCartPrice = cartPrice.reduce((accumulator, price) => {
 		return accumulator + price;
 	}, 0);
+
+	// const totalIndividualPrice= prod;
 
 	return (
 		<>
@@ -69,101 +70,110 @@ const Cart = () => {
 									leaveFrom="translate-x-0"
 									leaveTo="translate-x-full"
 								>
-									<Dialog.Panel className="pointer-events-auto relative w-screen max-w-md">
-										<Transition.Child
-											as={Fragment}
-											enter="ease-in-out duration-500"
-											enterFrom="opacity-0"
-											enterTo="opacity-100"
-											leave="ease-in-out duration-500"
-											leaveFrom="opacity-100"
-											leaveTo="opacity-0"
-										>
-											<div className="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 sm:-ml-10 sm:pr-4">
-												<button
-													type="button"
-													className="relative rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
-													onClick={() => setOpen(false)}
-												>
-													<span className="absolute -inset-2.5" />
-													<span className="sr-only">Close panel</span>
-													<X
-														className="h-6 w-6"
-														aria-hidden="true"
-													/>
-												</button>
-											</div>
-										</Transition.Child>
-										<div className="flex h-full flex-col overflow-y-scroll  overflow-x-hidden bg-white py-6 shadow-xl">
-											<div className="px-4 sm:px-6">
-												<Dialog.Title className="text-base font-semibold leading-6 text-gray-900">
-													Panel title
-												</Dialog.Title>
-											</div>
-											<div className="relative mt-6 flex-1 px-4 sm:px-6">
-												{/* Your content */}
-												<div className="h-full mx-2 bg-white overflow-y-auto overflow-x-hidden">
-													<div>
-														<p>${totalCartPrice.toFixed(2)}</p>
-														<button>Checkout</button>
-													</div>
-													{cartItems.map((ca) => (
-														<div
-															key={ca.id}
-															className="flex mb-2.5 flex-col py-2 border-b border-amber-900/30"
+									<Dialog.Panel className="pointer-events-auto w-screen max-w-md">
+										<div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+											<div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+												<div className="flex items-start justify-between">
+													<Dialog.Title className="text-lg font-medium text-gray-900">
+														Shopping cart
+													</Dialog.Title>
+													<div className="ml-3 flex h-7 items-center">
+														<button
+															type="button"
+															className="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
+															onClick={() => setOpen(false)}
 														>
-															<div className="flex gap-x-1.5">
-																<div>
-																	<img
-																		src={ca.productImage}
-																		alt=""
-																		className="h-20 w-32 object-cover rounded-md"
-																	/>
-																</div>
-																<div className="flex flex-col flex-1 ml-4">
-																	<div>
-																		<div className="flex justify-between text-base font-medium text-gray-900">
-																			<h3>
-																				<Link
-																					to={`/product/${ca?.productId}`}
-																					className="hover:underline"
-																					onClick={() =>
-																						setOpen(false)
-																					}
-																				>
-																					{ca.productName}
-																				</Link>
-																			</h3>
-																			<p className="ml-4">
-																				${ca.productPrice.toFixed(2)}
-																			</p>
-																		</div>
-																	</div>
-																	<div className="flex items-end justify-between flex-1 text-sm">
-																		<p className="text-gray-500">
-																			Qty {ca.quantity}
-																		</p>
-
-																		<div className="flex">
-																			<button
-																				type="button"
-																				className="font-medium  text-red-500/70 hover:text-red-500 hover:underline"
-																			>
-																				Remove
-																			</button>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-													))}
+															<span className="absolute -inset-0.5" />
+															<span className="sr-only">Close panel</span>
+															<X
+																className="h-6 w-6"
+																aria-hidden="true"
+															/>
+														</button>
+													</div>
 												</div>
-												<div className="absolute bottom-0 w-full -mb-2 flex justify-center mt-6 text-sm text-center text-gray-500">
+
+												<div className="mt-8">
+													<div className="flow-root">
+														<ul
+															role="list"
+															className="-my-6 divide-y divide-gray-200"
+														>
+															{cartItems.map((product) => (
+																<li
+																	key={product.id}
+																	className="flex py-6"
+																>
+																	<div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+																		<img
+																			src={product.productImage}
+																			alt={product.productName}
+																			className="h-full w-full object-cover object-center"
+																		/>
+																	</div>
+
+																	<div className="ml-4 flex flex-1 flex-col">
+																		<div>
+																			<div className="flex justify-between text-base font-medium text-gray-900">
+																				<h3>
+																					<Link
+																						className="hover:underline"
+																						to={`/product/${product.productId}`}
+																					>
+																						{product.productName}
+																					</Link>
+																				</h3>
+																				<p className="ml-4">
+																					$
+																					{product.productPrice *
+																						product.quantity}
+																				</p>
+																			</div>
+																		</div>
+																		<div className="flex flex-1 items-end justify-between text-sm">
+																			<p className="text-gray-500">
+																				Qty {product.quantity}
+																			</p>
+
+																			<div className="flex">
+																				<button
+																					type="button"
+																					className="font-medium text-amber-600 hover:text-amber-500 hover:underline"
+																				>
+																					Remove
+																				</button>
+																			</div>
+																		</div>
+																	</div>
+																</li>
+															))}
+														</ul>
+													</div>
+												</div>
+											</div>
+
+											<div className="border-t border-gray-200 px-4 py-6 sm:px-6">
+												<div className="flex justify-between text-base font-medium text-gray-900">
+													<p>Subtotal</p>
+													<p>${totalCartPrice}</p>
+												</div>
+												<p className="mt-0.5 text-sm text-gray-500">
+													Shipping and taxes calculated at checkout.
+												</p>
+												<div className="mt-6">
+													<Link
+														to="/checkout"
+														className="flex items-center justify-center rounded-md border border-transparent bg-amber-600 px-6 py-3 text-base font-medium text-white hover:bg-amber-700 active:scale-95 duration-200 shadow-md"
+													>
+														Checkout
+													</Link>
+												</div>
+												<div className="mt-6 flex justify-center text-center text-sm text-gray-500">
 													<p>
 														or
 														<button
 															type="button"
-															className="ml-2 font-medium text-orange-500 hover:text-orange-400"
+															className="font-medium text-amber-600 hover:text-amber-500 ml-2"
 															onClick={() => setOpen(false)}
 														>
 															Continue Shopping

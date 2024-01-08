@@ -130,10 +130,10 @@ const Products = () => {
 								<button
 									key={index}
 									onClick={() => paginate(index + 1)}
-									className={`duration-200 font-semibold rounded-md text-lg ${
+									className={`duration-200 font-semibold rounded-md text-lg px-4 ${
 										currentPage === index + 1
-											? "bg-amber-500 text-white shadow-md px-4"
-											: "px-4 text-gray-700 hover:underline"
+											? "bg-amber-500 text-white shadow-md"
+											: "text-gray-700 hover:underline"
 									}`}
 								>
 									{index + 1}

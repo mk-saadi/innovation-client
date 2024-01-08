@@ -41,7 +41,7 @@ const ProductDetail = () => {
 		const productName = product?.title;
 
 		const cartItem = {
-			productPrice,
+			productPrice: JSON.parse(productPrice),
 			productId,
 			productImage,
 			productName,
@@ -64,7 +64,7 @@ const ProductDetail = () => {
 			)}
 
 			<div className="flex flex-col min-h-screen mx-auto mt-2 bg-white xl:max-w-5xl lg:max-w-4xl md:max-w-2xl">
-				<div className="grid grid-cols-1 mx-2 lg:grid-cols-2 md:mx-4 lg:mx-8">
+				<div className="grid grid-cols-1 mx-2 gap-x-8 lg:grid-cols-2 md:mx-4 lg:mx-8">
 					{/* first col */}
 					<div className="w-full">
 						<div className="flex flex-row items-center justify-start font-medium text-gray-700 gap-x-1">
@@ -127,7 +127,7 @@ const ProductDetail = () => {
 							<div>
 								<button
 									onClick={handleCart}
-									className="submitButton"
+									className="bg-amber-500 text-white px-3 py-2 rounded-md drop-shadow-md shadow-md mt-6 active:scale-95"
 								>
 									<span className="sr-only">Add to cart</span>
 									Add to cart
