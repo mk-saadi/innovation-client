@@ -3,6 +3,38 @@ import { createContext, useContext, useReducer, useEffect } from "react";
 
 const CartContext = createContext();
 
+// const cartReducer = (state, action) => {
+// 	switch (action.type) {
+// 		case "ADD_TO_CART": {
+// 			const existingItemIndex = state.cartItems.findIndex(
+// 				(item) => item.productId === action.payload.productId
+// 			);
+
+// 			if (existingItemIndex !== -1) {
+// 				const updatedCart = [...state.cartItems];
+// 				updatedCart[existingItemIndex].quantity += 1;
+
+// 				localStorage.setItem("cartItemsInnovation", JSON.stringify(updatedCart));
+
+// 				return {
+// 					...state,
+// 					cartItems: updatedCart,
+// 				};
+// 			} else {
+// 				const updatedCart = [...state.cartItems, { ...action.payload, quantity: 1 }];
+// 				localStorage.setItem("cartItemsInnovation", JSON.stringify(updatedCart));
+
+// 				return {
+// 					...state,
+// 					cartItems: updatedCart,
+// 				};
+// 			}
+// 		}
+// 		default:
+// 			return state;
+// 	}
+// };
+
 const cartReducer = (state, action) => {
 	switch (action.type) {
 		case "ADD_TO_CART": {
@@ -11,8 +43,6 @@ const cartReducer = (state, action) => {
 			);
 
 			if (existingItemIndex !== -1) {
-				// Product with the same ID already exists, update quantity or take action
-				// For now, let's update the quantity
 				const updatedCart = [...state.cartItems];
 				updatedCart[existingItemIndex].quantity += 1;
 
@@ -23,7 +53,6 @@ const cartReducer = (state, action) => {
 					cartItems: updatedCart,
 				};
 			} else {
-				// Product with a new ID, add it to the cart
 				const updatedCart = [...state.cartItems, { ...action.payload, quantity: 1 }];
 				localStorage.setItem("cartItemsInnovation", JSON.stringify(updatedCart));
 
@@ -32,6 +61,14 @@ const cartReducer = (state, action) => {
 					cartItems: updatedCart,
 				};
 			}
+		}
+		case "REMOVE_FROM_CART": {
+			const updatedCart = state.cartItems.filter((item) => item.productId !== action.payload);
+			localStorage.setItem("cartItemsInnovation", JSON.stringify(updatedCart));
+			return {
+				...state,
+				cartItems: updatedCart,
+			};
 		}
 		default:
 			return state;

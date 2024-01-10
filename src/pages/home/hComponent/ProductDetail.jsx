@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import ProductSwiper from "./ProductSwiper";
-import { StarHalf, StarIcon } from "lucide-react";
+import { ShoppingBag, StarHalf, StarIcon } from "lucide-react";
 import useScrollToTop from "../../../hooks/useScrollToTop";
 import { Fade } from "react-awesome-reveal";
 import { useCart } from "../../../provider/CartProvider";
@@ -108,17 +108,17 @@ const ProductDetail = () => {
 										{discountedPrice && <span>${discountedPrice.toFixed(2)}</span>}
 									</span>
 								</p>
-								<span className=" text-xl tracking-tight text-red-500/70">
+								<span className="text-xl tracking-tight text-red-500/70">
 									-{product.discountPercentage}%
 								</span>
 							</div>
 
 							{/* rating */}
 							<div className="flex items-center justify-start rating-stars text-amber-500">
-								<span className="text-gray-700 mr-2">Rating </span>
+								<span className="mr-2 text-gray-700">Rating </span>
 								<RatingStars rating={product.rating} />
 							</div>
-							<p className="text-gray-700  mb-4">From {product.brand}</p>
+							<p className="mb-4 text-gray-700">From {product.brand}</p>
 
 							<div className="text-gray-700 max-w-prose">
 								<p>{product.description}</p>
@@ -127,9 +127,10 @@ const ProductDetail = () => {
 							<div>
 								<button
 									onClick={handleCart}
-									className="bg-amber-500 text-white px-3 py-2 rounded-md drop-shadow-md shadow-md mt-6 active:scale-95"
+									className="flex px-3 py-2 mt-6 text-white rounded-md shadow-md bg-amber-500 drop-shadow-md active:scale-95 gap-x-1.5"
 								>
 									<span className="sr-only">Add to cart</span>
+									<ShoppingBag />
 									Add to cart
 								</button>
 							</div>
@@ -137,8 +138,8 @@ const ProductDetail = () => {
 					</div>
 				</div>
 
-				<div className="mt-20 mx-2 mb-12 border-t border-gray-700/50">
-					<h2 className="text-lg font-semibold text-gray-700 mb-2">Similar products</h2>
+				<div className="mx-2 mt-20 mb-12 border-t border-gray-700/50">
+					<h2 className="mb-6 text-lg font-semibold text-gray-700">Similar products</h2>
 					<SimilarProduct category={product.category} />
 				</div>
 			</div>

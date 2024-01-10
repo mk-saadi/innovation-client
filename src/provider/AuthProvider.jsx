@@ -58,14 +58,11 @@ const AuthProvider = ({ children }) => {
 			setUser(currentUser);
 			if (currentUser) {
 				axios
-					.post("http://localhost:9100/jwt", {
+					.post("https://innovation-server-402i6icp1-mk-saadi.vercel.app/jwt", {
 						email: currentUser.email,
 					})
 					.then((data) => {
-						localStorage.setItem(
-							"access-token-innovation",
-							data.data.token
-						);
+						localStorage.setItem("access-token-innovation", data.data.token);
 						setLoading(false);
 					});
 			} else {
@@ -90,9 +87,7 @@ const AuthProvider = ({ children }) => {
 		signInWithGoogleRedirect,
 	};
 
-	return (
-		<AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
-	);
+	return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

@@ -11,6 +11,7 @@ import Home from "./pages/home/Home";
 import ProductDetail from "./pages/home/hComponent/ProductDetail";
 import CategoryProducts from "./pages/category/CategoryProduct";
 import { CartProvider } from "./provider/CartProvider";
+import Checkout from "./pages/checkout/Checkout";
 
 const router = createBrowserRouter([
 	{
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
 			{
 				path: "/:category",
 				element: <CategoryProducts />,
+			},
+			{
+				path: "/checkout",
+				element: <Checkout />,
 			},
 		],
 	},

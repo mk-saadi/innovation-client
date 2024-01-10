@@ -40,10 +40,7 @@ const Register = () => {
 		}
 
 		if (password.length < 8) {
-			return showToast(
-				"error",
-				"Password must be at least 8 characters!"
-			);
+			return showToast("error", "Password must be at least 8 characters!");
 		}
 
 		const options = {
@@ -76,9 +73,7 @@ const Register = () => {
 						(snapshot) => {
 							console.log(
 								"Upload is " +
-									(snapshot.bytesTransferred /
-										snapshot.totalBytes) *
-										100 +
+									(snapshot.bytesTransferred / snapshot.totalBytes) * 100 +
 									"% done"
 							);
 						},
@@ -86,50 +81,36 @@ const Register = () => {
 							console.log(error.message);
 						},
 						() => {
-							getDownloadURL(uploadTask.snapshot.ref).then(
-								(downloadURL) => {
-									const userDocument = {
-										photo: downloadURL,
-										name: name,
-										email: email,
-									};
-									updateProfileInfo(name, downloadURL);
+							getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+								const userDocument = {
+									photo: downloadURL,
+									name: name,
+									email: email,
+								};
+								updateProfileInfo(name, downloadURL);
 
-									axios
-										.post(
-											"http://localhost:9100/users",
-											userDocument
-										)
-										.then((response) => {
-											if (
-												response.data.acknowledged ===
-												true
-											) {
-												showToast(
-													"success",
-													"Registration successful!"
-												);
-												form.reset();
+								axios
+									.post(
+										"https://innovation-server-402i6icp1-mk-saadi.vercel.app/users",
+										userDocument
+									)
+									.then((response) => {
+										if (response.data.acknowledged === true) {
+											showToast("success", "Registration successful!");
+											form.reset();
 
+											setTimeout(() => {
+												showToast("loading", "Redirecting");
 												setTimeout(() => {
-													showToast(
-														"loading",
-														"Redirecting"
-													);
-													setTimeout(() => {
-														navigate("/");
-													}, 500);
-												}, 1000);
-											}
-										})
-										.catch((error) => {
-											showToast(
-												"error",
-												"Couldn't store data to database!"
-											);
-										});
-								}
-							);
+													navigate("/");
+												}, 500);
+											}, 1000);
+										}
+									})
+									.catch((error) => {
+										showToast("error", "Couldn't store data to database!");
+									});
+							});
 						}
 					);
 				} else {
@@ -188,21 +169,15 @@ const Register = () => {
 							<div
 								className="bg-[#cacaca88] w-4/5"
 								style={{
-									borderLeft:
-										activeInput === "name"
-											? "3px solid #fab07a"
-											: "",
-									paddingLeft:
-										activeInput === "name" ? "7px" : "",
+									borderLeft: activeInput === "name" ? "3px solid #fab07a" : "",
+									paddingLeft: activeInput === "name" ? "7px" : "",
 								}}
 								onFocus={handleFocus}
 								onBlur={handleBlur}
 								id="parag"
 								tabIndex={1}
 							>
-								<p className="text-sm font-medium text-gray-500">
-									Your Name
-								</p>
+								<p className="text-sm font-medium text-gray-500">Your Name</p>
 								<input
 									type="text"
 									id="inputForm"
@@ -214,21 +189,15 @@ const Register = () => {
 							<div
 								className="bg-[#cacaca88] w-4/5"
 								style={{
-									borderLeft:
-										activeInput === "image"
-											? "3px solid #fab07a"
-											: "",
-									paddingLeft:
-										activeInput === "image" ? "7px" : "",
+									borderLeft: activeInput === "image" ? "3px solid #fab07a" : "",
+									paddingLeft: activeInput === "image" ? "7px" : "",
 								}}
 								onFocus={handleFocus}
 								onBlur={handleBlur}
 								id="parag"
 								tabIndex={1}
 							>
-								<p className="text-sm font-medium text-gray-500">
-									Your Photo
-								</p>
+								<p className="text-sm font-medium text-gray-500">Your Photo</p>
 
 								{selectedFile ? (
 									<label
@@ -244,10 +213,7 @@ const Register = () => {
 											/>
 										)}
 										{selectedFile.name.length > 25
-											? `${selectedFile.name.slice(
-													0,
-													25
-											  )}...`
+											? `${selectedFile.name.slice(0, 25)}...`
 											: selectedFile.name}
 									</label>
 								) : (
@@ -271,21 +237,15 @@ const Register = () => {
 							<div
 								className="bg-[#cacaca88] w-4/5"
 								style={{
-									borderLeft:
-										activeInput === "email"
-											? "3px solid #fab07a"
-											: "",
-									paddingLeft:
-										activeInput === "email" ? "7px" : "",
+									borderLeft: activeInput === "email" ? "3px solid #fab07a" : "",
+									paddingLeft: activeInput === "email" ? "7px" : "",
 								}}
 								onFocus={handleFocus}
 								onBlur={handleBlur}
 								id="parag"
 								tabIndex={1}
 							>
-								<p className="text-sm font-medium text-gray-500">
-									Your Email
-								</p>
+								<p className="text-sm font-medium text-gray-500">Your Email</p>
 								<input
 									type="text"
 									id="inputForm"
@@ -297,30 +257,22 @@ const Register = () => {
 							<div
 								className="bg-[#cacaca88] w-4/5"
 								style={{
-									borderLeft:
-										activeInput === "password"
-											? "3px solid #fab07a"
-											: "",
-									paddingLeft:
-										activeInput === "password" ? "7px" : "",
+									borderLeft: activeInput === "password" ? "3px solid #fab07a" : "",
+									paddingLeft: activeInput === "password" ? "7px" : "",
 								}}
 								onFocus={handleFocus}
 								onBlur={handleBlur}
 								id="parag"
 								tabIndex={1}
 							>
-								<p className="text-sm font-medium text-gray-500">
-									Password
-								</p>
+								<p className="text-sm font-medium text-gray-500">Password</p>
 								<div className="flex">
 									<input
 										id="inputForm"
 										name="password"
 										autoComplete="off"
 										required
-										type={
-											showPassword ? "text" : "password"
-										}
+										type={showPassword ? "text" : "password"}
 									/>
 
 									<button
@@ -346,9 +298,7 @@ const Register = () => {
 						damping={1}
 					>
 						<div className="flex items-center justify-center gap-x-2">
-							<p className="font-medium text-gray-500">
-								Already a member?
-							</p>
+							<p className="font-medium text-gray-500">Already a member?</p>
 							<Link
 								className="font-semibold duration-150 text-amber-700 hover:underline hover:text-amber-600"
 								to="/login"

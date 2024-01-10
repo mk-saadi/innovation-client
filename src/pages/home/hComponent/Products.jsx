@@ -13,7 +13,7 @@ const Products = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const productsPerPage = 12;
 
-	// useScrollToTop();
+	useScrollToTop();
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -94,7 +94,7 @@ const Products = () => {
 											<img
 												src={product?.thumbnail}
 												alt={product?.title}
-												className="h-40 object-cover w-full duration-300 md:h-36 xl:h-48 lg:h-44 group-hover:scale-105 rounded-t-xl"
+												className="object-cover w-full h-40 duration-300 md:h-36 xl:h-48 lg:h-44 group-hover:scale-105 rounded-t-xl"
 											/>
 										</div>
 									</div>
@@ -106,14 +106,14 @@ const Products = () => {
 											<RatingStars rating={product.rating} />
 										</div>
 
-										<div className="flex lg:flex-row flex-col mt-1 text-lg font-medium text-gray-700">
+										<div className="flex flex-col mt-1 text-lg font-medium text-gray-700 lg:flex-row">
 											<p className="">Price: ${product?.price}</p>
-											<span className="mx-2 hidden lg:block"> - </span>
+											<span className="hidden mx-2 lg:block"> - </span>
 											<p className="text-gray-500">{product?.stock} in stock</p>
 										</div>
 									</div>
 
-									<div className="absolute lg:px-4 py-1 px-2 lg:py-2 font-medium  text-white bg-red-500 md:text-sm text-xs rounded-full shadow-xl top-3 -right-3 drop-shadow-md ">
+									<div className="absolute px-2 py-1 text-xs font-medium text-white bg-red-500 rounded-full shadow-xl lg:px-4 lg:py-2 md:text-sm top-3 -right-3 drop-shadow-md ">
 										<p>-{product.discountPercentage}% OFF</p>
 									</div>
 								</Link>
